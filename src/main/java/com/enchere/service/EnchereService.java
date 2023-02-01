@@ -1,7 +1,9 @@
 package com.enchere.service;
 
+import com.enchere.exception.CustomException;
 import com.enchere.model.Categorie;
 import com.enchere.model.Enchere;
+import com.enchere.model.Photo;
 import com.enchere.model.Utilisateur;
 import com.enchere.repo.EnchereRepo;
 import com.enchere.service.common.CrudService;
@@ -21,17 +23,26 @@ public class EnchereService extends CrudService<Enchere, EnchereRepo> {
 
     @Autowired
     public DureeEnchereService dureeEnchereService;
+
+    @Autowired
     public CommissionService commissionService;
+
+    @Autowired
+    public PhotoService photoService;
 
     public EnchereService(EnchereRepo repo) {
         super(repo);
     }
 
-    public Enchere create(Enchere enchere){
+    public Enchere create(Enchere enchere) throws CustomException {
         if (enchere.getDuree()==null){
             enchere.setDuree(dureeEnchereService.getLastduree().getDuree());
         } else if (enchere.getCommission()==null) {
             enchere.setCommission(commissionService.getLatestCommission().getPourcentage());
+        }
+        for(Photo photo:enchere.getPhotos()){
+            photo.setId(enchere.getId());
+            photoService.create(photo);
         }
         return repo.save(enchere);
     }

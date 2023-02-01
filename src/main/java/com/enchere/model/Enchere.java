@@ -48,6 +48,9 @@ public class Enchere extends HasId{
     @Column(name="datefin")
     private LocalDateTime datefin;
 
+    @OneToMany(mappedBy = "idenchere")
+    private List<Photo> photos;
+
     @Transient
     private Integer status;
 

@@ -94,4 +94,14 @@ public class UtilisateurController extends CrudController<Utilisateur, Utilisate
     public ResponseEntity<?> getSoldeUtilisateur(@PathVariable("idutilisateur") Long idutilisateur){
         return returnSuccess(service.getSoldeUtilisateur(idutilisateur),HttpStatus.OK);
     }
+
+    @GetMapping("/solde/token")
+    public ResponseEntity<?> getSoldeUtilisateurUsingToken(@RequestHeader("user_token") String token){
+        UtilisateurToken utilisateurToken=utilisateurTokenService.checkToken(token);
+        if(utilisateurToken==null){
+            CustomException customException=new CustomException("Token expired");
+            return returnError(customException,HttpStatus.UNAUTHORIZED);
+        }
+        return returnSuccess(service.getSoldeUtilisateur(utilisateurToken.getUtilisateur().getId()),HttpStatus.OK);
+    }
 }

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface UtilisateurTokenRepo extends JpaRepository<UtilisateurToken,Long> {
@@ -24,4 +25,6 @@ public interface UtilisateurTokenRepo extends JpaRepository<UtilisateurToken,Lon
 
     @Query(value = "select * from Utilisateur_Token a where a.tokenvalue= :value",nativeQuery = true)
     public UtilisateurToken getTokenByValue(@Param(value = "value") String value);
+
+    public UtilisateurToken getUtilisateurTokenByTokenvalueAndDateExpGreaterThan(String token, Date date);
 }
