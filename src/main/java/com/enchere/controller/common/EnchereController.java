@@ -83,7 +83,7 @@ public class EnchereController extends CrudController<Enchere, EnchereService>{
         }
     }
 
-    @GetMapping("/token")
+    @GetMapping("/get/token")
     public ResponseEntity<?> getForUtilisateurToken(@RequestHeader(value="user_token") String token){
         try{
             UtilisateurToken utilisateurToken=utilisateurTokenService.getUserByToken(token);
