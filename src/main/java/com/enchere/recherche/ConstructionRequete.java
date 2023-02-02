@@ -41,10 +41,10 @@ public class ConstructionRequete {
             return " 2=2 ";
         }
         if (date_min==null)
-            return  " (datedebut<='"+date_max+"') ";
+            return  " (datefin<='"+date_max+"') ";
         if (date_max==null)
-            return  " (datedebut>='"+date_min+"') ";
-        return " ( datedebut between '"+date_min+"' and '"+date_max+"' ) ";
+            return  " (datefin>='"+date_min+"') ";
+        return " ( datefin between '"+date_min+"' and '"+date_max+"' ) ";
     }
 
     private String getConditionPrix(){
