@@ -40,11 +40,18 @@ public class EnchereService extends CrudService<Enchere, EnchereRepo> {
         } else if (enchere.getCommission()==null) {
             enchere.setCommission(commissionService.getLatestCommission().getPourcentage());
         }
-        for(Photo photo:enchere.getPhotos()){
-            photo.setId(enchere.getId());
-            photoService.create(photo);
+        if(enchere.getPhotos()!=null){
+            for(Photo photo:enchere.getPhotos()){
+                photo.setId(enchere.getId());
+                photoService.create(photo);
+            }
         }
         return repo.save(enchere);
+//        for(Photo photo:enchere.getPhotos()){
+//            photo.setId(enchere.getId());
+//            photoService.create(photo);
+//        }
+//        return repo.save(enchere);
     }
 
     public List<Enchere> getEncheresFinis(Long idutilisateur){

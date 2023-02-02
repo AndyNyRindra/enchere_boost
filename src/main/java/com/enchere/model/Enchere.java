@@ -55,6 +55,9 @@ public class Enchere extends HasId{
     private Integer status;
 
     public Integer getStatus() {
+        if(datefin==null){
+            return 0;
+        }
         if (datefin.isAfter(LocalDateTime.now())){
              status = 0;
         }
