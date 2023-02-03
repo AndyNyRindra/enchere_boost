@@ -62,6 +62,7 @@ public class ConstructionRequete {
         String req = "";
         if (status == null){
             req = " 4=4 ";
+            return req;
         }
         if (status==0)
             req =  " (datefin>now()) ";
