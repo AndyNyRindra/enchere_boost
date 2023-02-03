@@ -16,9 +16,9 @@ public class ConstructionRequete {
     private Date date_max = null;
     private String key_word = "";
     private int[] categorie = null;
-    private double prix_min = -1;
-    private double prix_max = -1;
-    private int status = -1;
+    private Double prix_min;
+    private Double prix_max;
+    private Integer status;
 
     private String getConditionCategorie(){
         String condition = "";
@@ -48,19 +48,19 @@ public class ConstructionRequete {
     }
 
     private String getConditionPrix(){
-        if ((prix_min == -1) && (prix_max==-1)){
+        if ((prix_min == null) && (prix_max==null)){
             return " 3=3 ";
         }
-        if (prix_min==-1)
+        if (prix_min==null)
             return  " (prixminimal<="+prix_max+") ";
-        if (prix_max==-1)
+        if (prix_max==null)
             return  " (prixminimal>="+prix_min+") ";
         return " ( prixminimal between "+prix_min+" and "+prix_max+" ) ";
     }
 
     private String getConditionStatus(){
         String req = "";
-        if (status == -1){
+        if (status == null){
             req = " 4=4 ";
         }
         if (status==0)
