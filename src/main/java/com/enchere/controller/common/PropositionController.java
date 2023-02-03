@@ -5,6 +5,7 @@ import com.enchere.model.Enchere;
 import com.enchere.model.Proposition;
 import com.enchere.model.Utilisateur;
 import com.enchere.model.UtilisateurToken;
+import com.enchere.service.EnchereService;
 import com.enchere.service.PropositionService;
 import com.enchere.service.UtilisateurService;
 import com.enchere.service.UtilisateurTokenService;
@@ -26,6 +27,8 @@ public class PropositionController extends CrudController<Proposition, Propositi
     UtilisateurService utilisateurService;
 
     @Autowired
+    EnchereService enchereService;
+    @Autowired
     UtilisateurTokenService utilisateurTokenService;
 
     public PropositionController(PropositionService service) {
@@ -36,6 +39,11 @@ public class PropositionController extends CrudController<Proposition, Propositi
     public ResponseEntity<?> create2(@RequestHeader(value = "user_token") String token, @RequestBody Proposition proposition) {
         try {
             UtilisateurToken utilisateurToken = utilisateurTokenService.getUserByToken(token);
+            proposition.setEnchere(enchereService.getById(proposition.getEnchere().getId()));
+            if(proposition.getPrix() < proposition.getEnchere().getPrixminimal()){
+                CustomException customException = new CustomException("Veuillez miser plus haut");
+                return returnError(customException, HttpStatus.UNAUTHORIZED);
+            }
             Utilisateur utilisateur = utilisateurToken.getUtilisateur();
             double solde = utilisateurService.getSoldeUtilisateur(utilisateur.getId());
             if (solde < proposition.getPrix()) {
@@ -51,7 +59,7 @@ public class PropositionController extends CrudController<Proposition, Propositi
                 return returnError(customException, HttpStatus.UNAUTHORIZED);
             }
             List<Proposition> proposition1 = service.getPropByEnchere(proposition.getEnchere());
-            if (proposition1 != null) {
+            if (proposition1.size()!=0) {
                 if (proposition1.get(0).getPrix() > proposition.getPrix()) {
                     CustomException customException = new CustomException("Veuillez miser plus haut");
                     return returnError(customException, HttpStatus.UNAUTHORIZED);
