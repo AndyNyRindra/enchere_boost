@@ -89,14 +89,16 @@ public class EnchereController extends CrudController<Enchere, EnchereService>{
             Enchere enchere=service.getById(id);
             List<Proposition> propositions=propositionService.getPropByEnchere(enchere);
             if(propositions.size()==0){
-                Proposition proposition=new Proposition();
-                proposition.setEnchere(enchere);
-                proposition.setUtilisateur(null);
-                proposition.setPrix(0.0);
-                enchere.setPlusHaut(proposition);
+                PropHaut propHaut=new PropHaut();
+                propHaut.setPrix(0.0);
+                propHaut.setUtilisateur(null);
+                enchere.setPlusHaut(propHaut);
             }
             else {
-                enchere.setPlusHaut(propositions.get(0));
+                PropHaut propHaut=new PropHaut();
+                propHaut.setPrix(propositions.get(0).getPrix());
+                propHaut.setUtilisateur(propositions.get(0).getUtilisateur());
+                enchere.setPlusHaut(propHaut);
             }
             return returnSuccess(enchere,HttpStatus.OK);
         } catch (CustomException e) {

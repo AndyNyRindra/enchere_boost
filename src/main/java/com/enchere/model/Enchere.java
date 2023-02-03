@@ -38,7 +38,7 @@ public class Enchere extends HasId{
     private LocalDateTime datedebut;
 
     @Transient
-    private Proposition plusHaut;
+    private PropHaut plusHaut;
 
 
     @ManyToOne
