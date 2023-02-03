@@ -45,6 +45,7 @@ public class PropositionController extends CrudController<Proposition, Propositi
                 return returnError(customException, HttpStatus.UNAUTHORIZED);
             }
             Utilisateur utilisateur = utilisateurToken.getUtilisateur();
+            proposition.setUtilisateur(utilisateur);
             double solde = utilisateurService.getSoldeUtilisateur(utilisateur.getId());
             if (solde < proposition.getPrix()) {
                 CustomException customException = new CustomException("Solde insuffisant");
