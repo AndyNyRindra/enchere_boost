@@ -54,12 +54,12 @@ public class EnchereController extends CrudController<Enchere, EnchereService>{
         return returnSuccess(service.getEncheresFinis(idutilisateur), HttpStatus.OK);
     }
 
-    @GetMapping("/rechercheavancee")
+    @PostMapping("/rechercheavancee")
     public ResponseEntity<?> filtrer(@RequestBody ConstructionRequete constructionRequete){
         return returnSuccess(rechercheEnchere.rechercheAvancee(constructionRequete), HttpStatus.OK);
     }
 
-    @GetMapping("/recherchemotcle/{key}")
+    @PostMapping("/recherchemotcle/{key}")
     public ResponseEntity<?> filtrerMotCle(@PathVariable("key") String key){
         return returnSuccess(rechercheEnchere.rechercheMotCle(key), HttpStatus.OK);
     }
