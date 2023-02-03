@@ -87,7 +87,7 @@ public class EnchereController extends CrudController<Enchere, EnchereService>{
     public ResponseEntity<?> getFiche(@PathVariable("id") Long id){
         try {
             Enchere enchere=service.getById(id);
-            List<Proposition> propositions=propositionService.getPlusHaut();
+            List<Proposition> propositions=propositionService.getPropByEnchere(enchere);
             if(propositions.size()==0){
                 Proposition proposition=new Proposition();
                 proposition.setEnchere(enchere);
