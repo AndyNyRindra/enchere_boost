@@ -1,22 +1,16 @@
 package com.enchere.service;
 
 import com.enchere.exception.CustomException;
-import com.enchere.model.Categorie;
 import com.enchere.model.Enchere;
 import com.enchere.model.Photo;
 import com.enchere.model.Utilisateur;
 import com.enchere.repo.EnchereRepo;
 import com.enchere.service.common.CrudService;
-import jakarta.persistence.criteria.Predicate;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EnchereService extends CrudService<Enchere, EnchereRepo> {
@@ -64,6 +58,16 @@ public class EnchereService extends CrudService<Enchere, EnchereRepo> {
     public List<Enchere> getEncheresFinis(){
         List<Enchere> enchereList= repo.getEncheresFinis();
         return enchereList;
+    }
+
+    public Enchere getById(Long id) throws CustomException {
+        Optional<Enchere> enchere=repo.findById(id);
+        if(enchere.isPresent()){
+            return enchere.get();
+        }
+        else{
+            throw new CustomException("Enchere not found");
+        }
     }
 
     public List<Enchere> findAll(){

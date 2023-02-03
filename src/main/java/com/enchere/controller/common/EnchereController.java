@@ -3,10 +3,7 @@ package com.enchere.controller.common;
 import com.enchere.exception.CustomException;
 import com.enchere.model.*;
 import com.enchere.recherche.ConstructionRequete;
-import com.enchere.service.EnchereService;
-import com.enchere.service.RechercheEnchere;
-import com.enchere.service.UtilisateurService;
-import com.enchere.service.UtilisateurTokenService;
+import com.enchere.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +26,9 @@ public class EnchereController extends CrudController<Enchere, EnchereService>{
 
     @Autowired
     UtilisateurTokenService utilisateurTokenService;
+
+    @Autowired
+    PropositionService propositionService;
 
     public EnchereController(EnchereService service) {
         super(service);
@@ -81,6 +81,28 @@ public class EnchereController extends CrudController<Enchere, EnchereService>{
         catch (Exception e){
             return returnError(e,HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @GetMapping("/fiche/{id}")
+    public ResponseEntity<?> getFiche(@PathVariable("id") Long id){
+        try {
+            Enchere enchere=service.getById(id);
+            List<Proposition> propositions=propositionService.getPlusHaut();
+            if(propositions.size()==0){
+                Proposition proposition=new Proposition();
+                proposition.setEnchere(enchere);
+                proposition.setUtilisateur(null);
+                proposition.setPrix(0.0);
+                enchere.setPlusHaut(proposition);
+            }
+            else {
+                enchere.setPlusHaut(propositions.get(0));
+            }
+            return returnSuccess(enchere,HttpStatus.OK);
+        } catch (CustomException e) {
+            return returnError(e,HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @GetMapping("/get/token")

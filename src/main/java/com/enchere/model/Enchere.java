@@ -37,6 +37,9 @@ public class Enchere extends HasId{
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",insertable = false)
     private LocalDateTime datedebut;
 
+    @Transient
+    private Proposition plusHaut;
+
 
     @ManyToOne
     @JoinColumn(name = "idutilisateur")
